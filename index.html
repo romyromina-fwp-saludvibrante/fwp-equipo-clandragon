@@ -494,30 +494,30 @@
                     <img src="img/testimonio1.png" alt="Testimonio 1" class="test-img" onerror="this.src='[https://via.placeholder.com/65](https://via.placeholder.com/65)'">
                     <div class="test-info">
                         <div class="stars">★★★★★</div>
-                        <p class="test-author">José T-K.</p>
+                        <p class="test-author">Alex T.</p>
                     </div>
                 </div>
-                <p class="test-text">"Es increible que en solo 1 mes mi metabolismo logró bajar 4 tallas de cinturón, con 24 Burn y LIV"</p>
+                <p class="test-text">"Desde que integré esto a mi rutina, mi energía es inagotable. Totalmente recomendado para rendir al máximo."</p>
             </div>
             <div class="test-card">
                 <div class="test-header">
                     <img src="img/testimonio2.png" alt="Testimonio 2" class="test-img" onerror="this.src='[https://via.placeholder.com/65](https://via.placeholder.com/65)'">
                     <div class="test-info">
                         <div class="stars">★★★★★</div>
-                        <p class="test-author">Seba C.</p>
+                        <p class="test-author">Brenda C.</p>
                     </div>
                 </div>
-                <p class="test-text">"Tras años estancado, logré eliminar la grasa abdominal localizada y alcanzar una verdaddera definición muscular integrando E-Boost como pre-entreno."</p>
+                <p class="test-text">"Mi digestión y mi piel son otras desde que empecé con el protocolo. Hay un antes y un después evidente."</p>
             </div>
             <div class="test-card">
                 <div class="test-header">
                     <img src="img/testimonio3.png" alt="Testimonio 3" class="test-img" onerror="this.src='[https://via.placeholder.com/65](https://via.placeholder.com/65)'">
                     <div class="test-info">
                         <div class="stars">★★★★★</div>
-                        <p class="test-author">Basti P.</p>
+                        <p class="test-author">Alejandra Q.</p>
                     </div>
                 </div>
-                <p class="test-text">"En solo 2 meses RENÖVA+ transformó mi piel y frenó la causa de mi cabello por estrés, devolviéndome la seguridad al eliminar brotes y suavizar mi rostro."</p>
+                <p class="test-text">"Me sentía estancada, pero este sistema me ayudó a procesar las calorías de forma eficiente. Me siento imparable."</p>
             </div>
         </div>
     </section>
@@ -578,8 +578,9 @@
                 <input type="text" id="chk-nombre" class="checkout-input" placeholder="Tu Nombre y Apellido" required>
                 <input type="text" id="chk-rut" class="checkout-input" placeholder="Tu RUT o DNI" required>
                 <input type="email" id="chk-correo" class="checkout-input" placeholder="Tu Correo Electrónico" required>
+                <input type="tel" id="chk-telefono" class="checkout-input" placeholder="Tu Teléfono / WhatsApp" required>
                 <input type="text" id="chk-direccion" class="checkout-input" placeholder="Dirección de Envío Completa" required>
-                
+
                 <div class="value-stack-box" style="margin-top: 5px;">
                     <strong style="color: #166534; font-size: 0.95rem;">🎁 Beneficios pagando con Transferencia:</strong>
                     <ul style="margin-bottom: 0;">
@@ -712,14 +713,26 @@
             const nom = document.getElementById('chk-nombre').value.trim();
             const rut = document.getElementById('chk-rut').value.trim();
             const email = document.getElementById('chk-correo').value.trim();
+            const tel = document.getElementById('chk-telefono').value.trim();
             const dir = document.getElementById('chk-direccion').value.trim();
 
-            if(!nom || !rut || !email || !dir) { alert("⚠️ Por favor, completa todos los campos (Nombre, RUT, Correo y Dirección) para asegurar tu envío."); return; }
+            if(!nom || !rut || !email || !tel || !dir) { 
+                alert("⚠️ Por favor, completa todos los campos (Nombre, RUT, Correo, Teléfono y Dirección) para asegurar tu envío."); 
+                return; 
+            }
 
             if(metodo === 'transferencia') {
+                // Si es transferencia, pasa al Paso 2
                 document.getElementById('checkout-step-1').style.display = 'none';
                 document.getElementById('checkout-step-2').style.display = 'block';
             } else {
+                // MAGIA MERCADO PAGO: Asegura el Lead antes de pagar
+                const mensajeMP = `¡Hola! Acabo de iniciar la compra de ${checkoutActualNombre} por Mercado Pago.\n\n📦 *Mis datos de envío son:*\n👤 Nombre: ${nom}\n🪪 RUT/DNI: ${rut}\n📧 Correo: ${email}\n📱 Teléfono: ${tel}\n📍 Dirección: ${dir}\n\n*Te aviso por si hay algún problema con mi pago o tarjeta.*`;
+                const urlWa = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensajeMP)}`;
+                
+                // 1. Abre WhatsApp en una nueva pestaña silenciosamente para el embajador
+                window.open(urlWa, '_blank');
+                // 2. Redirige al cliente a Mercado Pago en la pantalla actual
                 window.location.href = checkoutActualLink;
             }
         }
@@ -728,8 +741,10 @@
             const nom = document.getElementById('chk-nombre').value.trim();
             const rut = document.getElementById('chk-rut').value.trim();
             const email = document.getElementById('chk-correo').value.trim();
+            const tel = document.getElementById('chk-telefono').value.trim();
             const dir = document.getElementById('chk-direccion').value.trim();
-            const mensaje = `¡Hola! Acabo de transferir por ${checkoutActualNombre} (${checkoutActualPrecio}).\n\n📦 *Mis datos de envío son:*\n👤 Nombre: ${nom}\n🪪 RUT/DNI: ${rut}\n📧 Correo: ${email}\n📍 Dirección: ${dir}\n\n🧾 *Adjunto mi comprobante de pago.*`;
+            
+            const mensaje = `¡Hola! Acabo de transferir por ${checkoutActualNombre} (${checkoutActualPrecio}).\n\n📦 *Mis datos de envío son:*\n👤 Nombre: ${nom}\n🪪 RUT/DNI: ${rut}\n📧 Correo: ${email}\n📱 Teléfono: ${tel}\n📍 Dirección: ${dir}\n\n🧾 *Adjunto mi comprobante de pago.*`;
             const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`;
             window.open(url, '_blank');
         }
@@ -797,7 +812,6 @@ const timerInterval = setInterval(() => {
     </script>
 </body>
 </html>
-
 
 
 
